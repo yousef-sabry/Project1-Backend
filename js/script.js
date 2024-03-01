@@ -1,29 +1,64 @@
 
- var allProducts = document.querySelectorAll(".profile-name")
- var div1 = document.getElementById("div1")
- var btn1 = document.getElementById("showPrice")
- var res= document.getElementById("result")
-  var totalPrice = 0
 
- allProducts.forEach(function (item) {
-     item.onclick = function (){
-         totalPrice +=  +(item.getAttribute("price"))
-         div1.innerHTML += item.textContent + " "
+const data10 = require("./data10")
+const yargs = require("yargs");
+yargs.command({
+    command:"add",
+    describe:"add an item",
+    builder:{
+        fname:{
+            describe: "this is first name ",
+            demandOption: true,
+            type : "string"
 
-         if (div1.innerHTML != ""){
-             btn1.style.display = "block"
-            
-         }
+        },
+        lname:{
+            describe: "this is last name ",
+            demandOption: true,
+            type : "string"
 
-     }
- })
- btn1.onclick = function (){
-     result.innerHTML = totalPrice
- }
+        }
+    },
+    handler:(x)=>{
+    
+    data10.addperson( x.id , x.fname , x.lname , x.age , x.city );
+
+    }
+})
+
+yargs.command({
+    command:"delete",
+    describe:"delete an item",
+    
+    handler:(x)=>{
+    data10.deleteData(x.id)
+    }
+})
+
+yargs.command({
+    command:"read",
+    describe:"Read Data",
+    builder :{
+        id :{
+            describe:"this id   will be used to read the data",
+            demandOption : true,
+            type : "string"
+        }
+    }, 
+    handler:(x)=>{
+    data10.readData(x.id);
+    console.log("\n");
+    }
+})
+
+yargs.command({
+    command:"list",
+    describe:"list Data", 
+    handler:(x)=>{
+    data10.listData();
+    console.log("\n");
+    }
+})
 
 
-
-
-
-
-
+yargs.parse();
